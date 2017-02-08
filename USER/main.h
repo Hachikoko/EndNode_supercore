@@ -3,6 +3,7 @@
 
 #define NODE_NUM  1
 #define TEST_VERSION
+#define TEST_MPU
 #define ADD_EXTRA_FREQUENCY 120
 #define WORK_FREQUENCY 5
 

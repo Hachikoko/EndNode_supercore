@@ -77,50 +77,60 @@
         <tvExpOptDlg>0</tvExpOptDlg>
         <IsCurrentTarget>1</IsCurrentTarget>
       </OPTFL>
-      <CpuCode>18</CpuCode>
+      <CpuCode>255</CpuCode>
       <Books>
         <Book>
           <Number>0</Number>
-          <Title>Getting Started (STM32F4-Discovery)</Title>
-          <Path>E:\keil\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\DM00037368.pdf</Path>
+          <Title>STM32F4-Discovery Quick Start Guide (STM32F4-Discovery)</Title>
+          <Path>D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.10.0\Documentation/32F4-DISCOVERY_QSG.pdf</Path>
         </Book>
         <Book>
           <Number>1</Number>
-          <Title>User Manual (STM32F4-Discovery)</Title>
-          <Path>E:\keil\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\DM00039084.pdf</Path>
+          <Title>MCBSTM32F400 Quick Start Guide (MCBSTM32F400)</Title>
+          <Path>D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.10.0\Documentation/MCBSTM32F400_QSG.pdf</Path>
         </Book>
         <Book>
           <Number>2</Number>
           <Title>User Manual (MCBSTM32F400)</Title>
-          <Path>E:\keil\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\mcbstm32f200.chm</Path>
+          <Path>D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.10.0\MDK/Boards/Keil/MCBSTM32F400/Documentation/mcbstm32f200.chm</Path>
         </Book>
         <Book>
           <Number>3</Number>
           <Title>Schematics (MCBSTM32F400)</Title>
-          <Path>E:\keil\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\mcbstm32f400-schematics.pdf</Path>
+          <Path>D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.10.0\MDK/Boards/Keil/MCBSTM32F400/Documentation/mcbstm32f400-schematics.pdf</Path>
         </Book>
         <Book>
           <Number>4</Number>
-          <Title>Bill of Materials (STM32F4-Discovery)</Title>
-          <Path>E:\keil\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\stm32f4discovery_bom.zip</Path>
+          <Title>Getting Started (STM32F4-Discovery)</Title>
+          <Path>D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.10.0\MDK/Boards/ST/STM32F4-Discovery/Documentation/DM00037368.pdf</Path>
         </Book>
         <Book>
           <Number>5</Number>
-          <Title>Gerber Files (STM32F4-Discovery)</Title>
-          <Path>E:\keil\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\stm32f4discovery_gerber.zip</Path>
+          <Title>User Manual (STM32F4-Discovery)</Title>
+          <Path>D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.10.0\MDK/Boards/ST/STM32F4-Discovery/Documentation/DM00039084.pdf</Path>
         </Book>
         <Book>
           <Number>6</Number>
-          <Title>Schematics (STM32F4-Discovery)</Title>
-          <Path>E:\keil\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\stm32f4discovery_sch.zip</Path>
+          <Title>Bill of Materials (STM32F4-Discovery)</Title>
+          <Path>D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.10.0\MDK/Boards/ST/STM32F4-Discovery/Documentation/stm32f4discovery_bom.zip</Path>
         </Book>
         <Book>
           <Number>7</Number>
+          <Title>Gerber Files (STM32F4-Discovery)</Title>
+          <Path>D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.10.0\MDK/Boards/ST/STM32F4-Discovery/Documentation/stm32f4discovery_gerber.zip</Path>
+        </Book>
+        <Book>
+          <Number>8</Number>
+          <Title>Schematics (STM32F4-Discovery)</Title>
+          <Path>D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.10.0\MDK/Boards/ST/STM32F4-Discovery/Documentation/stm32f4discovery_sch.zip</Path>
+        </Book>
+        <Book>
+          <Number>9</Number>
           <Title>MCBSTM32F400 Evaluation Board Web Page (MCBSTM32F400)</Title>
           <Path>http://www.keil.com/mcbstm32f400/</Path>
         </Book>
         <Book>
-          <Number>8</Number>
+          <Number>10</Number>
           <Title>STM32F4-Discovery Web Page (STM32F4-Discovery)</Title>
           <Path>http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1199/PF252419</Path>
         </Book>
@@ -169,7 +179,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>JL2CM3</Key>
-          <Name>-U286370559 -O14 -S1 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight JTAG-DP") -D00(4BA00477) -L00(4) -N01("Unknown JTAG device") -D01(06413041) -L01(5) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO15 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_1024.FLM -FS08000000 -FL0100000 -FP0($$Device:STM32F407ZG$Flash\STM32F4xx_1024.FLM)</Name>
+          <Name>-U286370559 -O14 -S1 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight JTAG-DP") -D00(4BA00477) -L00(4) -N01("Unknown JTAG device") -D01(06413041) -L01(5) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO15 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_1024 -FS08000000 -FL0100000 -FP0($$Device:STM32F407ZG$CMSIS/Flash/STM32F4xx_1024.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -802,8 +812,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\SYSTEM\NRF24L01\NRF24L01.c</PathWithFileName>
-      <FilenameWithoutPath>NRF24L01.c</FilenameWithoutPath>
+      <PathWithFileName>..\SYSTEM\SPI\SPI.c</PathWithFileName>
+      <FilenameWithoutPath>SPI.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -815,8 +825,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\SYSTEM\SPI\SPI.c</PathWithFileName>
-      <FilenameWithoutPath>SPI.c</FilenameWithoutPath>
+      <PathWithFileName>..\SYSTEM\Timer\Timer.c</PathWithFileName>
+      <FilenameWithoutPath>Timer.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -828,8 +838,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\SYSTEM\Timer\Timer.c</PathWithFileName>
-      <FilenameWithoutPath>Timer.c</FilenameWithoutPath>
+      <PathWithFileName>..\SYSTEM\IIC\IIC.c</PathWithFileName>
+      <FilenameWithoutPath>IIC.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -851,6 +861,40 @@
       <bDave2>0</bDave2>
       <PathWithFileName>..\readme.txt</PathWithFileName>
       <FilenameWithoutPath>readme.txt</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+  </Group>
+
+  <Group>
+    <GroupName>HARDWARE</GroupName>
+    <tvExp>1</tvExp>
+    <tvExpOptDlg>0</tvExpOptDlg>
+    <cbSel>0</cbSel>
+    <RteFlg>0</RteFlg>
+    <File>
+      <GroupNumber>6</GroupNumber>
+      <FileNumber>47</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\HARDWARE\MPU9250\MPU9250.c</PathWithFileName>
+      <FilenameWithoutPath>MPU9250.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>6</GroupNumber>
+      <FileNumber>48</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\HARDWARE\NRF24L01\NRF24L01.c</PathWithFileName>
+      <FilenameWithoutPath>NRF24L01.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
