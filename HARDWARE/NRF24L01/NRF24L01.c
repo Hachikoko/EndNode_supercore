@@ -39,7 +39,7 @@ u8 words_buf[100];
 			 TIM_Cmd(TIM7,ENABLE); 
 		 }else if(rev_buf[0] == 'A' && rev_buf[1] == 'N'){
 			node_index_for_base_station = rev_buf[2] - '0' + rev_buf[3] - '0';
-			 Timer7_init();
+			Timer7_init();
 			sprintf((char *)words_buf,"AN%02d",node_index_for_base_station);
 			Wireless_Send_Data(words_buf);
 //			end_node_add_flag = 1;
@@ -48,7 +48,6 @@ u8 words_buf[100];
 		 }
 		 EXTI_ClearITPendingBit(EXTI_Line1);
 	 }
-	 
  }
 
 void NRF24L01_Init(void){
