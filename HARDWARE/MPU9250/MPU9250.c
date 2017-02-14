@@ -30,57 +30,57 @@ u8 MPU9250_Init(void){
 		MPU_Write_Byte(MPU9250_PWR_MGMT_1,0X01);	//设置CLKSEL,PLL X轴为参考
 		MPU_Write_Byte(MPU9250_PWR_MGMT_2,0X00);	//加速度与陀螺仪都工作
 		MPU_Write_Byte(MPU9250_MAG_CNTL,0x01);		//电子罗盘工作
-		MPU_Set_Rate(50);						//设置采样率为50Hz
+		MPU_Set_Rate(800);						//设置采样率为50Hz
  	}else return 1;
 	return 0;
 }
 
-void MPU_Get_9_Axis(struct MPU9250_DATD * mpu_data){
-	u8 ret = 0;
-	
-	int temp_data;
-	int full_data = 32768;
-	struct MPU9250_RAW_DATD mpu_raw_data;
-	
-	ret = MPU_Get_Accelerometer(&(mpu_raw_data.ax),&(mpu_raw_data.ay),&(mpu_raw_data.az));
-	if(ret != 0){
-		Uart1_SendString((u8*)"get accelerometer fail!\r\n");
-		return;
-	}
-	
-	ret = MPU_Get_Gyroscope(&(mpu_raw_data.gx),&(mpu_raw_data.gy),&(mpu_raw_data.gz));
-	if(ret != 0){
-		Uart1_SendString((u8*)"get gyroscope fail!\r\n");
-		return;
-	}
-	
-	ret = MPU_Get_Gyroscope(&(mpu_raw_data.mx),&(mpu_raw_data.my),&(mpu_raw_data.mz));
-	if(ret != 0){
-		Uart1_SendString((u8*)"get gyroscope fail!\r\n");
-		return;
-	}
-	
-	temp_data = mpu_raw_data.ax;
-	mpu_data->ax = (((float)temp_data)/((float)full_data)) * 4.0;
-	temp_data = mpu_raw_data.ay;
-	mpu_data->ay = (((float)temp_data)/((float)full_data)) * 4.0;
-	temp_data = mpu_raw_data.az;
-	mpu_data->az = (((float)temp_data)/((float)full_data)) * 4.0;
-	
-	temp_data = mpu_raw_data.gx;
-	mpu_data->gx = (((float)temp_data)/((float)full_data)) * 500.0;
-	temp_data = mpu_raw_data.gy;
-	mpu_data->gy = (((float)temp_data)/((float)full_data)) * 500.0;
-	temp_data = mpu_raw_data.gz;
-	mpu_data->gz = (((float)temp_data)/((float)full_data)) * 500.0;
-	
-	mpu_data->mx = mpu_raw_data.mx * 0.15;
-	mpu_data->my = mpu_raw_data.my * 0.15;
-	mpu_data->mz = mpu_raw_data.mz * 0.15;
-	
-}
+//void MPU_Get_9_Axis(MPU9250_DATD * mpu_data){
+//	u8 ret = 0;
+//	
+//	int temp_data;
+//	int full_data = 32768;
+//	MPU9250_RAW_DATD mpu_raw_data;
+//	
+//	ret = MPU_Get_Accelerometer(&(mpu_raw_data.ax),&(mpu_raw_data.ay),&(mpu_raw_data.az));
+//	if(ret != 0){
+//		Uart1_SendString((u8*)"get accelerometer fail!\r\n");
+//		return;
+//	}
+//	
+//	ret = MPU_Get_Gyroscope(&(mpu_raw_data.gx),&(mpu_raw_data.gy),&(mpu_raw_data.gz));
+//	if(ret != 0){
+//		Uart1_SendString((u8*)"get gyroscope fail!\r\n");
+//		return;
+//	}
+//	
+//	ret = MPU_Get_Gyroscope(&(mpu_raw_data.mx),&(mpu_raw_data.my),&(mpu_raw_data.mz));
+//	if(ret != 0){
+//		Uart1_SendString((u8*)"get gyroscope fail!\r\n");
+//		return;
+//	}
+//	
+//	temp_data = mpu_raw_data.ax;
+//	mpu_data->ax = (((float)temp_data)/((float)full_data)) * 4.0;
+//	temp_data = mpu_raw_data.ay;
+//	mpu_data->ay = (((float)temp_data)/((float)full_data)) * 4.0;
+//	temp_data = mpu_raw_data.az;
+//	mpu_data->az = (((float)temp_data)/((float)full_data)) * 4.0;
+//	
+//	temp_data = mpu_raw_data.gx;
+//	mpu_data->gx = (((float)temp_data)/((float)full_data)) * 500.0;
+//	temp_data = mpu_raw_data.gy;
+//	mpu_data->gy = (((float)temp_data)/((float)full_data)) * 500.0;
+//	temp_data = mpu_raw_data.gz;
+//	mpu_data->gz = (((float)temp_data)/((float)full_data)) * 500.0;
+//	
+//	mpu_data->mx = mpu_raw_data.mx * 0.15;
+//	mpu_data->my = mpu_raw_data.my * 0.15;
+//	mpu_data->mz = mpu_raw_data.mz * 0.15;
+//	
+//}
 
-void MPU_Get_9_Axis_Raw(struct MPU9250_RAW_DATD * mpu_raw_data){
+void MPU_Get_9_Axis_Raw(MPU9250_RAW_DATD * mpu_raw_data){
 	u8 ret = 0;
 	
 	ret = MPU_Get_Accelerometer(&(mpu_raw_data->ax),&(mpu_raw_data->ay),&(mpu_raw_data->az));

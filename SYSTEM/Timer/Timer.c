@@ -4,8 +4,10 @@
 #include "main.h"
 #include "MPU9250.h"
 #include "string.h"
+#include "fliter.h"
 
 extern u8 node_index_for_base_station;
+extern Link_Queue * ptr_link_queue;
 unsigned int count_for_frame = 0;
 
 void Timer7_init(void){
@@ -39,34 +41,34 @@ void Timer7_init(void){
 void TIM7_IRQHandler(void){
 	u8 buf[30];
 	u8* temp = buf;
-	count_for_frame++;
-	struct MPU9250_RAW_DATD mpu_raw_data;
+	Fliter_Result flited_result;
 	memset(buf,0,30);
+	count_for_frame++;
 	if(TIM_GetITStatus(TIM7,TIM_IT_Update)==SET) //Òç³öÖÐ¶Ï
 	{
 		TIM_Cmd(TIM7,DISABLE); 
-		MPU_Get_9_Axis_Raw(&mpu_raw_data);
+		middle_average_filter(ptr_link_queue,&flited_result);
 		sprintf((char*)buf,"DT%02d",node_index_for_base_station);
 		temp += 4;
 		*((unsigned int *)temp) = count_for_frame;
 		temp += 4;
-		*((short *)temp) = mpu_raw_data.ax;
+		*((short *)temp) = (short)flited_result.ax;
 		temp += 2;
-		*((short *)temp) = mpu_raw_data.ay;
+		*((short *)temp) = (short)flited_result.ay;
 		temp += 2;
-		*((short *)temp) = mpu_raw_data.az;
+		*((short *)temp) = (short)flited_result.az;
 		temp += 2;
-		*((short *)temp) = mpu_raw_data.gx;
+		*((short *)temp) = (short)flited_result.gx;
 		temp += 2;
-		*((short *)temp) = mpu_raw_data.gy;
+		*((short *)temp) = (short)flited_result.gy;
 		temp += 2;
-		*((short *)temp) = mpu_raw_data.gz;
+		*((short *)temp) = (short)flited_result.gz;
 		temp += 2;
-		*((short *)temp) = mpu_raw_data.mx;
+		*((short *)temp) = (short)flited_result.mx;
 		temp += 2;
-		*((short *)temp) = mpu_raw_data.my;
+		*((short *)temp) = (short)flited_result.my;
 		temp += 2;
-		*((short *)temp) = mpu_raw_data.mz;
+		*((short *)temp) = (short)flited_result.mz;
 		temp += 2;
 		*temp = '@';
 		temp += 1;

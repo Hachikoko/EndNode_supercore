@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\FWLIB\inc;..\SYSTEM\SPI;..\SYSTEM\NRF24L01;..\SYSTEM\Timer;..\SYSTEM\IIC;..\HARDWARE\MPU9250;..\HARDWARE\NRF24L01</IncludePath>
+              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\FWLIB\inc;..\SYSTEM\SPI;..\SYSTEM\NRF24L01;..\SYSTEM\Timer;..\SYSTEM\IIC;..\HARDWARE\MPU9250;..\HARDWARE\NRF24L01;..\SYSTEM\fliter;..\SYSTEM\link_queue</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -647,6 +647,16 @@
               <FileName>IIC.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\SYSTEM\IIC\IIC.c</FilePath>
+            </File>
+            <File>
+              <FileName>fliter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\fliter\fliter.c</FilePath>
+            </File>
+            <File>
+              <FileName>link_queue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\link_queue\link_queue.c</FilePath>
             </File>
           </Files>
         </Group>

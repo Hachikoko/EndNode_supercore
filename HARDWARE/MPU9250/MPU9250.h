@@ -334,7 +334,7 @@
 
 
 //原始值结构体
-struct MPU9250_RAW_DATD{
+typedef struct mpu9250_raw_data{
 	short ax;			//加速度
 	short ay;
 	short az;
@@ -344,9 +344,9 @@ struct MPU9250_RAW_DATD{
 	short mx;			//磁力计
 	short my;
 	short mz;
-};
+}MPU9250_RAW_DATD;
 
-struct MPU9250_DATD{
+typedef struct mpu9250_data{
 	float ax;			//加速度
 	float ay;
 	float az;
@@ -356,13 +356,13 @@ struct MPU9250_DATD{
 	float mx;			//磁力计
 	float my;
 	float mz;
-};
+}MPU9250_DATD;
 
 
 //MPU9250主函数
 u8 MPU9250_Init(void);
-void MPU_Get_9_Axis(struct MPU9250_DATD * mpu_data);
-void MPU_Get_9_Axis_Raw(struct MPU9250_RAW_DATD * mpu_raw_data);
+void MPU_Get_9_Axis(MPU9250_DATD * mpu_data);
+void MPU_Get_9_Axis_Raw(MPU9250_RAW_DATD * mpu_raw_data);
 u8 MPU_Get_Accelerometer(short *ax,short *ay,short *az);
 u8 MPU_Get_Gyroscope(short *gx,short *gy,short *gz);
 u8 MPU_Get_Magnetometer (short *mx,short *my,short *mz);
