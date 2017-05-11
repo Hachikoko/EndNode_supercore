@@ -1,10 +1,17 @@
 #include "sys.h"
 #include "usart.h"	
+#include "string.h"
+#include "stdlib.h"
+#include "link_queue.h"
+
+
+
 
 void Uart1_init(u32 bound){                               //串口1初始化
 	
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
 	
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,ENABLE); //使能GPIOA时钟
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1,ENABLE);//使能USART1时钟
@@ -16,21 +23,73 @@ void Uart1_init(u32 bound){                               //串口1初始化
 	//USART1端口配置
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10; //GPIOA9与GPIOA10
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//复用功能
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	//速度50MHz
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;	//速度50MHz
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; //推挽复用输出
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP; //上拉
 	GPIO_Init(GPIOA,&GPIO_InitStructure); //初始化PA9，PA10
+	
 
    //USART1 初始化设置
 	USART_InitStructure.USART_BaudRate = bound;//波特率设置
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//字长为8位数据格式
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;//一个停止位
 	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
-	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_RTS_CTS;//无硬件数据流控制
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//收发模式
 	USART_Init(USART1, &USART_InitStructure); //初始化串口1
 	
+	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//开启中断
+	//Usart1 NVIC 配置
+	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;//抢占优先级 2
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority =0; //响应优先级 2
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ 通道使能
+	NVIC_Init(&NVIC_InitStructure); //根据指定的参数初始化 VIC 寄存器、
+	
 	USART_Cmd(USART1, ENABLE);  //使能串口1 
+}
+
+void Uart3_init(u32 bound){
+
+	GPIO_InitTypeDef GPIO_InitStructure;
+	USART_InitTypeDef USART_InitStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
+	
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC,ENABLE); //使能GPIOC时钟
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3,ENABLE);//使能USART3时钟
+
+	//串口1对应引脚复用映射
+	GPIO_PinAFConfig(GPIOC,GPIO_PinSource10,GPIO_AF_USART3); //GPIOA9复用为USART1
+	GPIO_PinAFConfig(GPIOC,GPIO_PinSource11,GPIO_AF_USART3); //GPIOA10复用为USART1
+	
+	//USART1端口配置
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_10; //GPIOA9与GPIOA10
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//复用功能
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;	//速度50MHz
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; //推挽复用输出
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP; //上拉
+	GPIO_Init(GPIOC,&GPIO_InitStructure); //初始化PA9，PA10
+	
+
+   //USART1 初始化设置
+	USART_InitStructure.USART_BaudRate = bound;//波特率设置
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//字长为8位数据格式
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;//一个停止位
+	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_RTS_CTS;//无硬件数据流控制
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//收发模式
+	USART_Init(USART3, &USART_InitStructure); //初始化串口1
+	
+	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);//开启中断
+	//Usart1 NVIC 配置
+	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;//抢占优先级 2
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority =1; //响应优先级 2
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ 通道使能
+	NVIC_Init(&NVIC_InitStructure); //根据指定的参数初始化 VIC 寄存器、
+	
+	USART_Cmd(USART3, ENABLE);  //使能串口1 
+	
 }
 
 void Uart1_SendString(u8 *str)
@@ -42,6 +101,223 @@ void Uart1_SendString(u8 *str)
 	 str++;	                                                                   //str的地址增加1，到下一个字符
   }
 }
+
+void Uart3_SendString(u8 *str)
+{
+  while(*str)
+  {
+  	 USART_SendData(USART3,*str);											   //将*str从USARTx发送出去
+	 while (USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET);		       //等待发送完毕
+	 str++;	                                                                   //str的地址增加1，到下一个字符
+  }
+}
+
+void USART1_IRQHandler(void)
+{
+	if(USART_GetITStatus(USART1,USART_IT_RXNE)!=RESET)//如果寄存器中有数据
+	{
+		uint16_t rec_short;
+		USART_ITConfig(USART1,USART_IT_RXNE,DISABLE);
+		rec_short = USART_ReceiveData(USART1);
+		if(*((char*)&rec_short) == ADD_SET_NODES)
+		{
+			
+		}else if(*((char*)&rec_short)== ADD_SINGLE_NODES){
+		}
+		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+		USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);
+	}
+}
+
+uint8_t  flag_frame = 0;
+
+
+int com3_buf_index = 0;
+int begin_index = 0;
+u8 interupt_flag = 0;
+extern Link_Queue* link_queue;
+unsigned char com3_buf[100];
+u8 send_data_buf[32];
+unsigned int frame_index = 0;
+unsigned char x[4] ={0xD6,0x8C,0x7D,0x3F};
+void USART3_IRQHandler(void)
+{
+	
+//	usart1_send_char('A');
+	if(USART_GetITStatus(USART3,USART_IT_RXNE)!=RESET)//如果寄存器中有数据
+	{
+		uint16_t rec_short;
+		USART_ClearITPendingBit(USART3,USART_IT_RXNE);
+//		USART_ITConfig(USART3,USART_IT_RXNE,DISABLE);
+//		usart1_send_char('z');
+		
+		//如果有其他中断打断，则放弃此时所有数据
+		if(interupt_flag == 1){
+			flag_frame = 0;
+			com3_buf_index = 0;
+		}
+		
+		com3_buf[com3_buf_index++] = USART_ReceiveData(USART3);
+		
+		if((com3_buf_index > 1) && (com3_buf[com3_buf_index - 1] == 0xA5) && (0x5A == com3_buf[com3_buf_index - 2])){
+			flag_frame = 1;
+			begin_index = com3_buf_index;
+		}
+		
+		if(flag_frame && (com3_buf_index - begin_index) == 56){
+			flag_frame = 0;
+			com3_buf_index = 0;
+			
+//			float a;
+//			char*temp = (char*)(com3_buf+begin_index - 2 + 37);
+//			memcpy(&a,temp,4);
+//			usart1_send_char('B');
+////			float a = *((float*)(temp));
+//			sprintf((char*)send_data_buf,"%p,%p,%f\r\n",com3_buf,temp,*((float*)temp));
+//			usart1_send_char('C');
+//			Uart1_SendString(send_data_buf);
+
+			
+//			u8* ptr_link_data = (u8*)malloc(56);
+//			memcpy(ptr_link_data,(com3_buf + begin_index),56);
+//			push_back_node(link_queue,ptr_link_data); //给无线保留数据
+			
+			//单节点测试
+//			int i = 0;
+//			for(i = 0; i < 58;i++){
+//				usart1_send_char(com3_buf[begin_index - 2 + i]);
+//			}
+			
+			send_data_buf[0] = 'D';
+			send_data_buf[1] = 5;
+			*((unsigned int *)(send_data_buf + 2)) = frame_index++;
+			float temp;
+			memcpy(&temp,com3_buf+begin_index - 2 + 37,4);
+			*((short*)(send_data_buf + 24)) = (short)(temp * 10000.0f);  //w
+						
+			memcpy(&temp,com3_buf+begin_index - 2 + 41,4);
+			*((short*)(send_data_buf + 26)) = (short)(temp * 10000.0f);  //x
+						
+			memcpy(&temp,com3_buf+begin_index - 2 + 45,4);
+			*((short*)(send_data_buf + 28)) = (short)(temp * 10000.0f);  //y
+			
+			memcpy(&temp,com3_buf+begin_index - 2 + 49,4);
+			*((short*)(send_data_buf + 30)) = (short)(temp * 10000.0f);  //z
+			
+			int i;
+			for(i = 0; i < 32;i++){
+				usart1_send_char(send_data_buf[i]);
+			}
+			memset(send_data_buf,0,32);
+		}
+		
+		
+//		USART_ITConfig(USART3,USART_IT_RXNE,ENABLE);
+	}
+}
+
+
+//串口1发送1个字符 
+//c:要发送的字符
+void usart1_send_char(u8 c)
+{
+	USART_SendData(USART1,c); 
+	while(USART_GetFlagStatus(USART1,USART_FLAG_TXE)==RESET);	
+} 
+
+void usart3_send_char(u8 c)
+{
+	USART_SendData(USART3,c); 
+	while(USART_GetFlagStatus(USART3,USART_FLAG_TXE)==RESET);	
+} 
+
+//传送数据给匿名四轴上位机软件(V2.6版本)
+//fun:功能字. 0XA0~0XAF
+//data:数据缓存区,最多28字节!!
+//len:data区有效数据个数
+void usart1_niming_report(u8 fun,u8*data,u8 len)
+{
+	u8 send_buf[32];
+	u8 i;
+	if(len>28)return;	//最多28字节数据 
+	send_buf[len+3]=0;	//校验数置零
+	send_buf[0]=0X88;	//帧头
+	send_buf[1]=fun;	//功能字
+	send_buf[2]=len;	//数据长度
+	for(i=0;i<len;i++)send_buf[3+i]=data[i];	//复制数据
+	for(i=0;i<len+3;i++)send_buf[len+3]+=send_buf[i];	//计算校验和	
+	for(i=0;i<len+4;i++)usart1_send_char(send_buf[i]);	//发送数据到串口1 
+}
+
+//发送加速度传感器数据和陀螺仪数据
+//aacx,aacy,aacz:x,y,z三个方向上面的加速度值
+//gyrox,gyroy,gyroz:x,y,z三个方向上面的陀螺仪值
+void MPU9250_send_data(short aacx,short aacy,short aacz,short gyrox,short gyroy,short gyroz,short meox,short meoy,short meoz)
+{
+	u8 tbuf[18]; 
+	tbuf[0]=(aacx>>8)&0XFF;
+	tbuf[1]=aacx&0XFF;
+	tbuf[2]=(aacy>>8)&0XFF;
+	tbuf[3]=aacy&0XFF;
+	tbuf[4]=(aacz>>8)&0XFF;
+	tbuf[5]=aacz&0XFF; 
+	tbuf[6]=(gyrox>>8)&0XFF;
+	tbuf[7]=gyrox&0XFF;
+	tbuf[8]=(gyroy>>8)&0XFF;
+	tbuf[9]=gyroy&0XFF;
+	tbuf[10]=(gyroz>>8)&0XFF;
+	tbuf[11]=gyroz&0XFF;
+	tbuf[12]=(meox>>8)&0XFF;
+	tbuf[13]=meox&0XFF;
+	tbuf[14]=(meoy>>8)&0XFF;
+	tbuf[15]=meoy&0XFF;
+	tbuf[16]=(meoz>>8)&0XFF;
+	tbuf[17]=meoz&0XFF;
+	usart1_niming_report(0XA1,tbuf,18);//自定义帧,0XA1
+}
+
+//通过串口1上报结算后的姿态数据给电脑
+//aacx,aacy,aacz:x,y,z三个方向上面的加速度值
+//gyrox,gyroy,gyroz:x,y,z三个方向上面的陀螺仪值
+//roll:横滚角.单位0.01度。 -18000 -> 18000 对应 -180.00  ->  180.00度
+//pitch:俯仰角.单位 0.01度。-9000 - 9000 对应 -90.00 -> 90.00 度
+//yaw:航向角.单位为0.1度 0 -> 3600  对应 0 -> 360.0度
+//void MPU9250_report_imu(MPU9250_RAW_DATD*mup_raw_data,Fliter_Result_Data*result_data)
+//{
+//	u8 tbuf[24]; 
+//	u8 i;
+//	short roll,pitch,yaw;
+//	roll = (short)(result_data->euler[0] * 100);
+//	pitch = (short)(result_data->euler[1] * 100);
+//	yaw = (short)result_data->euler[2] * 10;
+//	for(i=0;i<28;i++)tbuf[i]=0;//清0
+//	tbuf[0]=((mup_raw_data->ax)>>8)&0XFF;
+//	tbuf[1]=(mup_raw_data->ax)&0XFF;
+//	tbuf[2]=((mup_raw_data->ay)>>8)&0XFF;
+//	tbuf[3]=(mup_raw_data->ay)&0XFF;
+//	tbuf[4]=((mup_raw_data->az)>>8)&0XFF;
+//	tbuf[5]=(mup_raw_data->az)&0XFF; 
+//	tbuf[6]=((mup_raw_data->gx)>>8)&0XFF;
+//	tbuf[7]=(mup_raw_data->gx)&0XFF;
+//	tbuf[8]=((mup_raw_data->gy)>>8)&0XFF;
+//	tbuf[9]=(mup_raw_data->gy)&0XFF;
+//	tbuf[10]=((mup_raw_data->gz)>>8)&0XFF;
+//	tbuf[11]=(mup_raw_data->gz)&0XFF;	
+//	tbuf[12]=((mup_raw_data->mx)>>8)&0XFF;
+//	tbuf[13]=(mup_raw_data->mx)&0XFF;
+//	tbuf[14]=((mup_raw_data->my)>>8)&0XFF;
+//	tbuf[15]=(mup_raw_data->my)&0XFF;
+//	tbuf[16]=((mup_raw_data->mz)>>8)&0XFF;
+//	tbuf[17]=(mup_raw_data->mz)&0XFF;
+//	tbuf[18]=(roll>>8)&0XFF;
+//	tbuf[19]=roll&0XFF;
+//	tbuf[20]=(pitch>>8)&0XFF;
+//	tbuf[21]=pitch&0XFF;
+//	tbuf[22]=(yaw>>8)&0XFF;
+//	tbuf[23]=yaw&0XFF;
+//	usart1_niming_report(0XAF,tbuf,24);//飞控显示帧,0XAF
+//} 
+
 
 
 
@@ -231,8 +507,5 @@ void Uart1_SendString(u8 *str)
 //#endif
 //} 
 //#endif	
-
- 
-
 
 

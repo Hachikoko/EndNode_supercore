@@ -17,6 +17,8 @@ const u8 TX_ADDRESS[TX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //发送地址
 const u8 RX_ADDRESS[RX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x00}; //接收地址	
 u8 words_buf[100];
 
+unsigned int absolute_frame_num = 0;
+
  void EXTI1_IRQHandler(void){
 	
 	 u8 rev_buf[5] = {0,0,0,0,0};
@@ -31,10 +33,11 @@ u8 words_buf[100];
 		 }
 		 Set_NRF24L01_CE; 
 		 //分配时隙，开始循环
-		 if(rev_buf[0] == 'S' && rev_buf[1] == 'T' && rev_buf[2] == 'A' && rev_buf[3] == 'R'){
+		 if(rev_buf[0] == 'S' && rev_buf[1] == 'T'){
 //#ifdef TEST_VERSION
 //			 Uart1_SendString((u8*)"在时隙分配中...\r\n");
 //#endif
+			 absolute_frame_num = (*((unsigned int *)(rev_buf+2)));
 			 current_frequency = WORK_FREQUENCY;
 			 TIM_Cmd(TIM7,ENABLE); 
 		 }else if(rev_buf[0] == 'A' && rev_buf[1] == 'N'){

@@ -28,20 +28,21 @@ Queue_Node* creat_link_node(void){
 u8 pop_node(Link_Queue* link_queue){
 	Queue_Node* temp_node = link_queue->front;
 	link_queue->front = temp_node->next;
+	free(temp_node->ptr_data);
 	free(temp_node);
 	link_queue->length -= 1;
 	
 	return 0;
 }
 
-u8 push_back_node(Link_Queue* link_queue,MPU9250_RAW_DATD* ptr_data){
+u8 push_back_node(Link_Queue* link_queue,u8* ptr_frame_data){
 	
 	Queue_Node* temp_node = (Queue_Node*)malloc(sizeof(Queue_Node));
 	#ifdef TEST_LINK_QUEUE
 	Uart1_SendString("after push_back_node malloc\r\n");
 	#endif
 	memset(temp_node,0,sizeof(Queue_Node));
-	temp_node->data = *(ptr_data);
+	temp_node->ptr_data = ptr_frame_data;
 	temp_node->next = NULL;
 	
 	

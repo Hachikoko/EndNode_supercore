@@ -62,7 +62,7 @@
 #define TX_ADR_WIDTH    5                               //5字节的地址宽度
 #define RX_ADR_WIDTH    5                               //5字节的地址宽度
 #define TX_PLOAD_WIDTH  27                              //20字节的用户数据宽度
-#define RX_PLOAD_WIDTH  5                               //20字节的用户数据宽度
+#define RX_PLOAD_WIDTH  6                               //20字节的用户数据宽度
 
 
 

@@ -9,8 +9,13 @@
 #define ADD_EXTRA_FREQUENCY 120
 #define WORK_FREQUENCY 5
 
-#define FLITER_RAW_N 12
+//¼òµ¥ÂË²¨
+#define FLITER_RAW_N 3
 #define FLITER_N (FLITER_RAW_N - 2)
+
+//»¥²¹ÂË²¨
+#define OFFSET_COUNT 15000
+
 
 #endif
 

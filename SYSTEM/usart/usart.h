@@ -2,7 +2,7 @@
 #define __USART_H
 #include "stdio.h"	
 #include "stm32f4xx_conf.h"
-#include "sys.h" 
+#include "sys.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //Mini STM32开发板
@@ -34,9 +34,20 @@
 ////如果想串口中断接收，请不要注释以下宏定义
 //void uart_init(u32 bound);
 
+#define  ADD_SET_NODES '2'
+#define  ADD_SINGLE_NODES '1'
+
 
 void Uart1_init(u32 bound);
 void Uart1_SendString(u8 *str);
+void usart1_send_char(u8 c);
+void usart1_niming_report(u8 fun,u8*data,u8 len);
+//void MPU9250_send_data(short aacx,short aacy,short aacz,short gyrox,short gyroy,short gyroz,short meox,short meoy,short meoz);
+//void MPU9250_report_imu(MPU9250_RAW_DATD*mup_raw_data,Fliter_Result_Data*result_data);
+
+void Uart3_init(u32 bound);
+void Uart3_SendString(u8 *str);
+void usart3_send_char(u8 c);
 
 #endif
 
