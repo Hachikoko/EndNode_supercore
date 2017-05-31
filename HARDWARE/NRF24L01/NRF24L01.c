@@ -12,6 +12,14 @@ extern u8 node_index_for_base_station;
 extern u8 node_index_for_end_node;
 extern u8 extra_node_flag;
 extern u8 current_frequency;
+
+
+extern unsigned int mod_buf_index;
+extern unsigned int com3_absolute_buf_segment_index;
+int IRQ_mod_index = 0;
+u8 temp_ptr[32];
+
+
 //地址
 const u8 TX_ADDRESS[TX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //发送地址
 const u8 RX_ADDRESS[RX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x00}; //接收地址	
@@ -23,32 +31,33 @@ unsigned int absolute_frame_num = 0;
 	
 	 u8 rev_buf[5] = {0,0,0,0,0};
 	 u8 RX_Status;
-	 
+//	 usart1_send_char('B');
 	 if(EXTI_GetITStatus(EXTI_Line1) != RESET){
 		Clr_NRF24L01_CE;
 		RX_Status=NRF24L01_RxPacket(rev_buf);
 		if(RX_Status == 0){
-			Uart1_SendString(rev_buf);
-			Uart1_SendString("\r\n");
-		 }
-		 Set_NRF24L01_CE; 
+			Set_NRF24L01_CE; 
 		 //分配时隙，开始循环
-		 if(rev_buf[0] == 'S' && rev_buf[1] == 'T'){
-//#ifdef TEST_VERSION
-//			 Uart1_SendString((u8*)"在时隙分配中...\r\n");
-//#endif
-			 absolute_frame_num = (*((unsigned int *)(rev_buf+2)));
-			 current_frequency = WORK_FREQUENCY;
-			 TIM_Cmd(TIM7,ENABLE); 
-		 }else if(rev_buf[0] == 'A' && rev_buf[1] == 'N'){
-			node_index_for_base_station = rev_buf[2] - '0' + rev_buf[3] - '0';
-			Timer7_init();
-			sprintf((char *)words_buf,"AN%02d",node_index_for_base_station);
-			Wireless_Send_Data(words_buf);
-//			end_node_add_flag = 1;
-			current_frequency = WORK_FREQUENCY;
-			RX_Mode();
+			if(rev_buf[0] == 'S' && rev_buf[1] == 'T'){
+				absolute_frame_num = (*((unsigned int *)(rev_buf+2)));
+				current_frequency = WORK_FREQUENCY;
+				TIM_Cmd(TIM7,ENABLE); 
+			
+				Uart3_SendString((u8*)"AT+TRG\r\n");
+				
+				
+			}else if(rev_buf[0] == 'A' && rev_buf[1] == 'N'){
+				node_index_for_base_station = rev_buf[2] - '0' + rev_buf[3] - '0';
+				Timer7_init();
+				sprintf((char *)words_buf,"AN%02d",node_index_for_base_station);
+				Wireless_Send_Data(words_buf);
+//				end_node_add_flag = 1;
+				current_frequency = WORK_FREQUENCY;
+				RX_Mode();
+			}
+			
 		 }
+		 
 		 EXTI_ClearITPendingBit(EXTI_Line1);
 	 }
  }
@@ -87,7 +96,7 @@ void NRF24L01_Init(void){
   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   EXTI_Init(&EXTI_InitStructure);
   NVIC_InitStructure.NVIC_IRQChannel = EXTI1_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;//优先级最低
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;//优先级最低
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x00;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure); 

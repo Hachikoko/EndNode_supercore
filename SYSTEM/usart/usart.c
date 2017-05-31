@@ -3,7 +3,15 @@
 #include "string.h"
 #include "stdlib.h"
 #include "link_queue.h"
+#include "stdbool.h"
 
+
+int com3_absolute_buf_segment_index = -1;
+int index_50 = 0;
+extern Link_Queue* link_queue;
+unsigned char com3_buf[50];
+int mod_buf_index = 0;
+unsigned short temp_char,pre_char;
 
 
 
@@ -80,11 +88,11 @@ void Uart3_init(u32 bound){
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//收发模式
 	USART_Init(USART3, &USART_InitStructure); //初始化串口1
 	
-	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);//开启中断
+	USART_ITConfig(USART3,USART_IT_RXNE,ENABLE);//开启中断
 	//Usart1 NVIC 配置
 	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;//抢占优先级 2
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority =1; //响应优先级 2
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=2;//抢占优先级 2
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority =2; //响应优先级 2
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ 通道使能
 	NVIC_Init(&NVIC_InitStructure); //根据指定的参数初始化 VIC 寄存器、
 	
@@ -129,91 +137,113 @@ void USART1_IRQHandler(void)
 	}
 }
 
-uint8_t  flag_frame = 0;
 
 
-int com3_buf_index = 0;
-int begin_index = 0;
-u8 interupt_flag = 0;
-extern Link_Queue* link_queue;
-unsigned char com3_buf[100];
-u8 send_data_buf[32];
-unsigned int frame_index = 0;
-unsigned char x[4] ={0xD6,0x8C,0x7D,0x3F};
+
+
 void USART3_IRQHandler(void)
 {
 	
-//	usart1_send_char('A');
-	if(USART_GetITStatus(USART3,USART_IT_RXNE)!=RESET)//如果寄存器中有数据
-	{
-		uint16_t rec_short;
+	if(USART_GetITStatus(USART3,USART_IT_RXNE)!=RESET){		//如果寄存器中有数据
+		USART_ITConfig(USART3,USART_IT_RXNE,DISABLE);
 		USART_ClearITPendingBit(USART3,USART_IT_RXNE);
-//		USART_ITConfig(USART3,USART_IT_RXNE,DISABLE);
-//		usart1_send_char('z');
+		//缓存数据
+		temp_char = USART_ReceiveData(USART3);
 		
-		//如果有其他中断打断，则放弃此时所有数据
-		if(interupt_flag == 1){
-			flag_frame = 0;
-			com3_buf_index = 0;
+		usart1_send_char(temp_char);
+		
+		if((pre_char == 0x5A) && (temp_char == 0xA5)){
+			index_50 = 0;
+		}
+		pre_char = temp_char;
+		if(index_50 < 50){
+			com3_buf[index_50++] = (unsigned char)temp_char;
 		}
 		
-		com3_buf[com3_buf_index++] = USART_ReceiveData(USART3);
+		USART_ITConfig(USART3,USART_IT_RXNE,ENABLE);
 		
-		if((com3_buf_index > 1) && (com3_buf[com3_buf_index - 1] == 0xA5) && (0x5A == com3_buf[com3_buf_index - 2])){
-			flag_frame = 1;
-			begin_index = com3_buf_index;
-		}
-		
-		if(flag_frame && (com3_buf_index - begin_index) == 56){
-			flag_frame = 0;
-			com3_buf_index = 0;
-			
-//			float a;
-//			char*temp = (char*)(com3_buf+begin_index - 2 + 37);
-//			memcpy(&a,temp,4);
-//			usart1_send_char('B');
-////			float a = *((float*)(temp));
-//			sprintf((char*)send_data_buf,"%p,%p,%f\r\n",com3_buf,temp,*((float*)temp));
-//			usart1_send_char('C');
-//			Uart1_SendString(send_data_buf);
-
-			
-//			u8* ptr_link_data = (u8*)malloc(56);
-//			memcpy(ptr_link_data,(com3_buf + begin_index),56);
-//			push_back_node(link_queue,ptr_link_data); //给无线保留数据
-			
-			//单节点测试
-//			int i = 0;
-//			for(i = 0; i < 58;i++){
-//				usart1_send_char(com3_buf[begin_index - 2 + i]);
-//			}
-			
-			send_data_buf[0] = 'D';
-			send_data_buf[1] = 5;
-			*((unsigned int *)(send_data_buf + 2)) = frame_index++;
-			float temp;
-			memcpy(&temp,com3_buf+begin_index - 2 + 37,4);
-			*((short*)(send_data_buf + 24)) = (short)(temp * 10000.0f);  //w
-						
-			memcpy(&temp,com3_buf+begin_index - 2 + 41,4);
-			*((short*)(send_data_buf + 26)) = (short)(temp * 10000.0f);  //x
-						
-			memcpy(&temp,com3_buf+begin_index - 2 + 45,4);
-			*((short*)(send_data_buf + 28)) = (short)(temp * 10000.0f);  //y
-			
-			memcpy(&temp,com3_buf+begin_index - 2 + 49,4);
-			*((short*)(send_data_buf + 30)) = (short)(temp * 10000.0f);  //z
-			
-			int i;
-			for(i = 0; i < 32;i++){
-				usart1_send_char(send_data_buf[i]);
-			}
-			memset(send_data_buf,0,32);
-		}
-		
-		
-//		USART_ITConfig(USART3,USART_IT_RXNE,ENABLE);
 	}
+////	usart1_send_char((u8)'C');
+//	if(USART_GetITStatus(USART3,USART_IT_RXNE)!=RESET)//如果寄存器中有数据
+////	if(USART_GetITStatus(USART3,USART_IT_RXNE)==RESET)//如果寄存器中有数据
+//	{
+//		uint16_t rec_short;
+//		USART_ClearITPendingBit(USART3,USART_IT_RXNE);
+//		USART_ITConfig(USART3,USART_IT_RXNE,DISABLE);
+//		//如果有其他中断打断，则放弃此时所有数据
+//		if(interupt_flag == 1){
+////			usart1_send_char((u8)'E');
+//			flag_frame = 0;
+//			com3_absolute_buf_segment_index = 0;
+//			interupt_flag = 0;
+//		}
+//		
+//		com3_buf[com3_absolute_buf_segment_index++] = USART_ReceiveData(USART3);
+//		
+//		if((com3_absolute_buf_segment_index > 1) && (com3_buf[com3_absolute_buf_segment_index - 1] == 0xA5) && (0x5A == com3_buf[com3_absolute_buf_segment_index - 2])){
+//			flag_frame = 1;
+//			begin_index = com3_absolute_buf_segment_index;
+//		}
+//		
+//		if(flag_frame && (com3_absolute_buf_segment_index - begin_index) == 56){
+//			flag_frame = 0;
+//			com3_absolute_buf_segment_index = 0;
+//			
+////			usart1_send_char((u8)'D');
+//			
+//			u8* ptr_link_data = (u8*)malloc(32);
+//			push_back_node(link_queue,ptr_link_data); //给无线保留数据
+//			
+////			usart1_send_char((u8)'E');
+//			
+//			float temp;
+//			memcpy(&temp,com3_buf+begin_index - 2 + 37,4);
+//			*((short*)(ptr_link_data + 24)) = (short)(temp * 10000.0f);  //w
+//						
+//			memcpy(&temp,com3_buf+begin_index - 2 + 41,4);
+//			*((short*)(ptr_link_data + 26)) = (short)(temp * 10000.0f);  //x
+//						
+//			memcpy(&temp,com3_buf+begin_index - 2 + 45,4);
+//			*((short*)(ptr_link_data + 28)) = (short)(temp * 10000.0f);  //y
+//			
+//			memcpy(&temp,com3_buf+begin_index - 2 + 49,4);
+//			*((short*)(ptr_link_data + 30)) = (short)(temp * 10000.0f);  //z
+//			usart1_send_char((u8)'F');
+//			
+//			//单节点测试
+////			int i = 0;
+////			for(i = 0; i < 58;i++){
+////				usart1_send_char(com3_buf[begin_index - 2 + i]);
+////			}
+//			
+////			send_data_buf[0] = 'D';
+////			send_data_buf[1] = node_index_for_end_node;
+////			*((unsigned int *)(send_data_buf + 2)) = frame_index++;
+////			float temp;
+////			memcpy(&temp,com3_buf+begin_index - 2 + 37,4);
+////			*((short*)(send_data_buf + 24)) = (short)(temp * 10000.0f);  //w
+////						
+////			memcpy(&temp,com3_buf+begin_index - 2 + 41,4);
+////			*((short*)(send_data_buf + 26)) = (short)(temp * 10000.0f);  //x
+////						
+////			memcpy(&temp,com3_buf+begin_index - 2 + 45,4);
+////			*((short*)(send_data_buf + 28)) = (short)(temp * 10000.0f);  //y
+////			
+////			memcpy(&temp,com3_buf+begin_index - 2 + 49,4);
+////			*((short*)(send_data_buf + 30)) = (short)(temp * 10000.0f);  //z
+////			
+////			int i;
+////			for(i = 0; i < 32;i++){
+////				usart1_send_char(send_data_buf[i]);
+////			}
+////			memset(send_data_buf,0,32);
+//		}
+//		
+//		
+//		USART_ITConfig(USART3,USART_IT_RXNE,ENABLE);
+//		
+//	}
+	
 }
 
 

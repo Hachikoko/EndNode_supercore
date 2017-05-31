@@ -9,7 +9,7 @@
 #define ADD_EXTRA_FREQUENCY 120
 #define WORK_FREQUENCY 5
 
-//简单滤波
+//存储的数据组数
 #define FLITER_RAW_N 3
 #define FLITER_N (FLITER_RAW_N - 2)
 
