@@ -61,7 +61,7 @@ void TIM7_IRQHandler(void){
 		*(unsigned int*)(temp_ptr+2) = absolute_frame_num;
 
 		if((com3_buf[0] == 0xA5) && (com3_buf[26] == 0xD1)){
-			usart1_send_char('B');
+//			usart1_send_char('B');
 			*(short*)(temp_ptr + 6) = *(short*)(com3_buf + 6);
 			*(short*)(temp_ptr + 8) = *(short*)(com3_buf + 8);
 			*(short*)(temp_ptr + 10) = *(short*)(com3_buf + 10);

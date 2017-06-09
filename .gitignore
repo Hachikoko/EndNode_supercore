@@ -34,4 +34,10 @@
 /README
 
 keilkilll.bat
+USER/JLinkLog.txt
+USER/Template.uvguix.10240
+USER/Template.uvoptx
+USER/Template.uvprojx
+.gitignore.bak
+
 

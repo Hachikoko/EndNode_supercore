@@ -9,7 +9,7 @@
 #include "stdlib.h"
 
 u8 node_index_for_base_station = 0;
-u8 node_index_for_end_node = 5;
+u8 node_index_for_end_node = 3;
 u8 extra_node_flag = 0;
 u8 current_frequency = 0;
 Link_Queue* link_queue = NULL;
@@ -36,21 +36,23 @@ int main(void)
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //中断优先级分组2
 	delay_init(168);
 	Uart1_init(115200);
+	Uart2_init(115200);
 	Uart3_init(115200);
 	
 	supercore_init();
 	
 	
+	//无线传输初始化
 	NRF24L01_Init();
 	while(NRF24L01_Check()){
 		delay_ms(100);
 	}
 	current_frequency = node_index_for_end_node * 5;
 	RX_Mode();
-
+	
 	while(1){
-		delay_ms(10);
-
+		delay_ms(100);
+//		usart2_send_char('A');
 	}
 
 }

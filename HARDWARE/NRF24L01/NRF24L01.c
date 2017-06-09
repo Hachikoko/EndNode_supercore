@@ -330,11 +330,11 @@ u8 NRF24L01_Check(void)
 	if(i!=5)
 	{
 	
-		 Uart1_SendString(" . 射频模块检测失败......\r\n");
+	//	 Uart1_SendString(" . 射频模块检测失败......\r\n");
 	return 1;                               //NRF24L01不在位
 	}
 		
-		 Uart1_SendString(" . 射频模块检测通过......\r\n");
+	//	 Uart1_SendString(" . 射频模块检测通过......\r\n");
 	return 0;		                                //NRF24L01在位
 }
 
