@@ -9,7 +9,7 @@
 #include "stdlib.h"
 
 u8 node_index_for_base_station = 0;
-u8 node_index_for_end_node = 3;
+u8 node_index_for_end_node = 6;
 u8 extra_node_flag = 0;
 u8 current_frequency = 0;
 Link_Queue* link_queue = NULL;
