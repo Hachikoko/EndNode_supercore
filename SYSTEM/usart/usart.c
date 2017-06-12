@@ -246,7 +246,7 @@ void USART2_IRQHandler(void)
 			
 			if(com3_buf[0] == 0xA5 && (com3_buf[26] == 0xD1)){
 				float temp_quat;
-				frame_queue[index_1024 + 1] = VALID_DATA;
+				frame_queue[index_1024] = VALID_DATA;
 				*(short*)(frame_queue + index_1024 + 7) = *(short*)(com3_buf + 6);
 				*(short*)(frame_queue + index_1024 + 9) = *(short*)(com3_buf + 8);
 				*(short*)(frame_queue + index_1024 + 11) = *(short*)(com3_buf + 10);
@@ -266,9 +266,9 @@ void USART2_IRQHandler(void)
 
 				
 			}else{
-				frame_queue[index_1024 + 1] = INVALID_DATA;
+				frame_queue[index_1024] = INVALID_DATA;
 			}	
-			frame_queue[index_1024] = 'D';
+			frame_queue[index_1024 + 1] = 'D';
 			frame_queue[index_1024 + 2] = node_index_for_end_node;
 			
 			int length = (frame_elements_nums + 1) * 41 + 3;
@@ -312,7 +312,7 @@ void USART3_IRQHandler(void)
 			frame_queue[2] = '#';
 			if(com3_buf[0] == 0xA5 && (com3_buf[26] == 0xD1)){
 
-				frame_queue[4] = VALID_DATA;
+				frame_queue[3] = VALID_DATA;
 				*(short*)(frame_queue + 10) = *(short*)(com3_buf + 6);
 				*(short*)(frame_queue + 12) = *(short*)(com3_buf + 8);
 				*(short*)(frame_queue + 14) = *(short*)(com3_buf + 10);
@@ -335,9 +335,9 @@ void USART3_IRQHandler(void)
 //				*(float*)(frame_queue + 40) = temp_quat;
 
 			}else{
-				frame_queue[4] = INVALID_DATA;;
+				frame_queue[3] = INVALID_DATA;;
 			}	
-			frame_queue[3] = 'D';
+			frame_queue[4] = 'D';
 			frame_queue[5] = node_index_for_end_node;
 			
 			//保留4字节给序列号
