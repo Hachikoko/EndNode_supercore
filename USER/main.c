@@ -7,9 +7,10 @@
 #include "link_queue.h"
 #include "string.h"
 #include "stdlib.h"
+#include "DMA.h"
 
 u8 node_index_for_base_station = 0;
-u8 node_index_for_end_node = 6;
+u8 node_index_for_end_node = 5;
 u8 extra_node_flag = 0;
 u8 current_frequency = 0;
 Link_Queue* link_queue = NULL;
@@ -38,8 +39,10 @@ int main(void)
 	Uart1_init(115200);
 	Uart2_init(115200);
 	Uart3_init(115200);
-	
 	supercore_init();
+	
+	//串口1和串口2的DMA发送初始化
+	DMA1_and_DMA2_Config();
 	
 	
 	//无线传输初始化
