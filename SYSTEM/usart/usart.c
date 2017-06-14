@@ -438,22 +438,22 @@ void USART3_IRQHandler(void)
 			frame_queue[2] = '#';
 			if(com3_buf[0] == 0x5A && (com3_buf[27] == 0xD1)){
 				frame_queue[3] = VALID_DATA;
-				*(short*)(frame_queue + 10) = *(short*)(com3_buf + 6);
-				*(short*)(frame_queue + 12) = *(short*)(com3_buf + 8);
-				*(short*)(frame_queue + 14) = *(short*)(com3_buf + 10);
+				*(short*)(frame_queue + 10) = *(short*)(com3_buf + 7);
+				*(short*)(frame_queue + 12) = *(short*)(com3_buf + 9);
+				*(short*)(frame_queue + 14) = *(short*)(com3_buf + 11);
 			
-				*(short*)(frame_queue + 16) = *(short*)(com3_buf + 13);
-				*(short*)(frame_queue + 18) = *(short*)(com3_buf + 15);
-				*(short*)(frame_queue + 20) = *(short*)(com3_buf + 17);
+				*(short*)(frame_queue + 16) = *(short*)(com3_buf + 14);
+				*(short*)(frame_queue + 18) = *(short*)(com3_buf + 16);
+				*(short*)(frame_queue + 20) = *(short*)(com3_buf + 18);
 			
-				*(short*)(frame_queue + 22) = *(short*)(com3_buf + 20);
-				*(short*)(frame_queue + 24) = *(short*)(com3_buf + 22);
-				*(short*)(frame_queue + 26) = *(short*)(com3_buf + 24);
+				*(short*)(frame_queue + 22) = *(short*)(com3_buf + 21);
+				*(short*)(frame_queue + 24) = *(short*)(com3_buf + 23);
+				*(short*)(frame_queue + 26) = *(short*)(com3_buf + 25);
 
-				memcpy((frame_queue + 28),(com3_buf + 27),4);
-				memcpy((frame_queue + 32),(com3_buf + 31),4);
-				memcpy((frame_queue + 36),(com3_buf + 35),4);
-				memcpy((frame_queue + 40),(com3_buf + 39),4);
+				memcpy((frame_queue + 28),(com3_buf + 28),4);
+				memcpy((frame_queue + 32),(com3_buf + 32),4);
+				memcpy((frame_queue + 36),(com3_buf + 36),4);
+				memcpy((frame_queue + 40),(com3_buf + 40),4);
 
 			}else{
 				frame_queue[3] = INVALID_DATA;
