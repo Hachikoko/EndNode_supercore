@@ -222,6 +222,7 @@ void USART1_IRQHandler(void)
 			frame_queue[1] = frame_queue[1] + 1;
 			
 			if(com3_buf[0] == 0x5A && (com3_buf[27] == 0xD1)){
+
 				frame_queue[index_1024] = VALID_DATA;
 				*(short*)(frame_queue + index_1024 + 7) = *(short*)(com3_buf + 6);
 				*(short*)(frame_queue + index_1024 + 9) = *(short*)(com3_buf + 8);
@@ -242,15 +243,12 @@ void USART1_IRQHandler(void)
 			}else{
 				frame_queue[index_1024] = INVALID_DATA;
 			}	
-			
+
 			frame_queue[index_1024 + 1] = 'D';
 			frame_queue[index_1024 + 2] = node_index_for_end_node;
 			
-			int i = 0,length = (frame_elements_nums + 1) * 41 + 3;
+			int length = (frame_elements_nums + 1) * 41 + 3;
 			DMA_Enable(DMA1_Stream6,length);
-//			for(i = 0; i < length;i++) {
-//				usart2_send_char(frame_queue[i]);
-//			}
 			
 		}
 		
@@ -436,6 +434,7 @@ void USART3_IRQHandler(void)
 			frame_queue[0] = '#';
 			frame_queue[1] = 1;
 			frame_queue[2] = '#';
+
 			if(com3_buf[0] == 0x5A && (com3_buf[27] == 0xD1)){
 				frame_queue[3] = VALID_DATA;
 				*(short*)(frame_queue + 10) = *(short*)(com3_buf + 7);
@@ -457,6 +456,7 @@ void USART3_IRQHandler(void)
 
 			}else{
 				frame_queue[3] = INVALID_DATA;
+
 			}	
 			frame_queue[4] = 'D';
 			frame_queue[5] = node_index_for_end_node;
